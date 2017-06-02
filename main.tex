@@ -1,0 +1,78 @@
+%!TEX encoding = UTF-8 Unicode
+%!TEX program = xelatex
+
+\documentclass[bachelor,english,pdf]{ustcthesis}
+% bachelor|master|doctor
+\usepackage{ustcextra}
+\usepackage{graphicx, epstopdf}
+\usepackage{subfigure}
+\graphicspath{{figures/}}
+\bibliographystyle{ustcnumerical}
+% \bibliographystyle{ustcnumerical}
+
+
+\title{实际应用中基于无接触相机的心率检测方法}
+\author{韩旭}
+\major{电子信息工程}
+\advisor{Joern Ostermann\ 教授\ \quad 陈志波\ 教授}
+%\advisor{}
+\submitdate{二〇一七年五月}
+%\secrettext{机密\quad 小于等于20年}   % 内部|秘密|机密，注释本行则不保密
+\depart{一二三系}
+
+\entitle{Contact-free Camera Measurements of Heart Rate}
+\enauthor{Xu Han}
+\enmajor{Electronic Information Engineering}
+\enadvisor{Prof. Joern Ostermann\ \quad Prof. Zhibo Chen}
+\ensubmitdate{May, 2017}
+%\ensecrettext{Confidential\quad Less than or equal to 20 years}  % Internal|Secret|Confidential
+
+\begin{document}
+
+\maketitle
+
+%
+% 本科论文:
+%   frontmatter: 致谢、目录、中文摘要、英文摘要
+%   mainmatter: 正文章节、参考文献
+%   appendix: 附录
+%
+% 硕博论文:
+%   frontmatter: 中文摘要、英文摘要、目录、符号说明
+%   mainmatter: 正文、参考文献
+%   appendix: 附录
+%   backmatter: 致谢、发表论文
+%
+
+\frontmatter
+\input{chapters/acknowledgements}
+%\input{chapters/abstract}
+
+\tableofcontents
+\input{chapters/abstract}
+%\listoffigures
+%\listoftables
+%\listofalgorithms  % 算法索引，如不需要，可直接注释掉本行
+% \input{chapters/notation}
+
+\mainmatter
+\input{chapters/intro}
+\input{chapters/fundamentals}
+\input{chapters/improvedframework}
+\input{chapters/evaluation}
+\input{chapters/guideline}
+\input{chapters/headrotation}
+\input{chapters/summary}
+%\input{chapters/citation}
+%\input{chapters/bib}
+
+\bibliography{bib/tex}
+
+%\appendix
+%\chapter{论文规范}
+
+%\backmatter
+%\input{chapters/acknowledgements}
+%\input{chapters/publications}
+
+\end{document}
