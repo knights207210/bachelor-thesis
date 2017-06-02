@@ -1,0 +1,50 @@
+\contentsline {chapter}{摘要}{3}{chapter*.3}
+\contentsline {chapter}{Abstract}{4}{chapter*.4}
+\addvspace {12bp}
+\contentsline {chapter}{\numberline {Chapter 一}Introduction}{5}{chapter.1}
+\addvspace {12bp}
+\contentsline {chapter}{\numberline {Chapter 二}Fundamentals}{7}{chapter.2}
+\contentsline {section}{\numberline {第一节}Introduction to the Current Algorithm Framework}{7}{section.2.1}
+\contentsline {section}{\numberline {第二节}Theories}{8}{section.2.2}
+\contentsline {subsection}{\numberline {一}Photoplethysmography}{8}{subsection.2.2.1}
+\contentsline {subsection}{\numberline {二}Face Detection and Tracking}{9}{subsection.2.2.2}
+\contentsline {subsection}{\numberline {三}Normalization and Green-channel-based Model}{10}{subsection.2.2.3}
+\contentsline {subsection}{\numberline {四}Non-rigid Motion Elimination and Post Processing}{11}{subsection.2.2.4}
+\contentsline {subsection}{\numberline {五}Heart Rate Estimation}{12}{subsection.2.2.5}
+\contentsline {subsection}{\numberline {六}Groundtruth extraction}{13}{subsection.2.2.6}
+\contentsline {section}{\numberline {第三节}Results and related works}{14}{section.2.3}
+\addvspace {12bp}
+\contentsline {chapter}{\numberline {Chapter 三}The Improved Algorithm Framework}{15}{chapter.3}
+\contentsline {section}{\numberline {第一节}Improvement of the Current Algorithm}{15}{section.3.1}
+\contentsline {subsection}{\numberline {一}Updated ROI detecting and tracking method}{15}{subsection.3.1.1}
+\contentsline {subsection}{\numberline {二}Visualization Output and Rectified ROI}{17}{subsection.3.1.2}
+\contentsline {subsection}{\numberline {三}Improved Groundtruth Extraction}{18}{subsection.3.1.3}
+\contentsline {section}{\numberline {第二节}Creating New Test Materials under Realistic Scenarios}{20}{section.3.2}
+\contentsline {subsection}{\numberline {一}background}{20}{subsection.3.2.1}
+\contentsline {subsection}{\numberline {二}Scenarios Designing}{22}{subsection.3.2.2}
+\contentsline {subsection}{\numberline {三}Data Acquisition}{22}{subsection.3.2.3}
+\addvspace {12bp}
+\contentsline {chapter}{\numberline {Chapter 四}Evaluation}{24}{chapter.4}
+\contentsline {section}{\numberline {第一节}Evaluation on MAHNOB-HCI database}{24}{section.4.1}
+\contentsline {section}{\numberline {第二节}Evaluation on New Test Materials}{26}{section.4.2}
+\contentsline {subsection}{\numberline {一}Evaluation with Staying Still Scenario}{27}{subsection.4.2.1}
+\contentsline {subsection}{\numberline {二}Evaluation with Head Movement}{28}{subsection.4.2.2}
+\contentsline {subsection}{\numberline {三}Evaluation on Illumination Variation}{29}{subsection.4.2.3}
+\contentsline {subsection}{\numberline {四}Evaluation on Speaking Scenario}{30}{subsection.4.2.4}
+\contentsline {subsection}{\numberline {五}Evaluation on Glass Wearing}{31}{subsection.4.2.5}
+\contentsline {subsection}{\numberline {六}Evaluation on Make Up}{32}{subsection.4.2.6}
+\contentsline {subsection}{\numberline {七}Evaluation on Different Skin Colors}{33}{subsection.4.2.7}
+\contentsline {section}{\numberline {第三节}Discussion of Results}{34}{section.4.3}
+\addvspace {12bp}
+\contentsline {chapter}{\numberline {Chapter 五}Deriving Guideline for Further Studies}{36}{chapter.5}
+\contentsline {section}{\numberline {第一节}Impact of Recording Conditions}{36}{section.5.1}
+\contentsline {section}{\numberline {第二节}Guideline}{36}{section.5.2}
+\addvspace {12bp}
+\contentsline {chapter}{\numberline {Chapter 六}Innovative Method Aimed at Head Rotation Scenario}{39}{chapter.6}
+\contentsline {section}{\numberline {第一节}Algorithm Description}{39}{section.6.1}
+\contentsline {section}{\numberline {第二节}Evaluation and Result}{41}{section.6.2}
+\addvspace {12bp}
+\contentsline {chapter}{\numberline {Chapter 七}Summary}{43}{chapter.7}
+\addvspace {12bp}
+\contentsline {chapter}{Bibliography}{44}{chapter*.44}
+\contentsfinish 

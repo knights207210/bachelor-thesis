@@ -1,0 +1,50 @@
+This is BibTeX, Version 0.99d (TeX Live 2016)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: main.aux
+The style file: ustcnumerical.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Database file #1: bib/tex.bib
+Warning--empty booktitle in tomasi1991detection
+You've used 23 entries,
+            3679 wiz_defined-function locations,
+            886 strings with 10170 characters,
+and the built_in function-call counts, 69626 in all, are:
+= -- 795
+> -- 10032
+< -- 6456
++ -- 3389
+- -- 142
+* -- 677
+:= -- 7912
+add.period$ -- 85
+call.type$ -- 23
+change.case$ -- 46
+chr.to.int$ -- 3201
+cite$ -- 24
+duplicate$ -- 6800
+empty$ -- 861
+format.name$ -- 165
+if$ -- 14755
+int.to.chr$ -- 1
+int.to.str$ -- 24
+missing$ -- 0
+newline$ -- 141
+num.names$ -- 69
+pop$ -- 3328
+preamble$ -- 1
+purify$ -- 23
+quote$ -- 0
+skip$ -- 6783
+stack$ -- 0
+substring$ -- 3224
+swap$ -- 63
+text.length$ -- 23
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 161
+warning$ -- 1
+while$ -- 69
+width$ -- 0
+write$ -- 352
+(There was 1 warning)
