@@ -1,0 +1,32 @@
+﻿\begin{abstract}
+
+
+心率是人体重要的生理指标，对心率检测方法的研究也就成了重中之重。
+不同于传统的利用仪器测量心电来得到心率的方法，目前在计算机辅助下利用相机针对于人脸进行无接触式心率检测的方法具有简便、快捷、实用性强等多个优点。
+但是，目前的检测算法只在实验环境下能够有较为准确的检测结果，
+在实际场景下，由于光照、头部偏移、面部表情等因素的影响，其效果便会出现大幅度的下滑。
+由此，本篇论文在总结前人工作的基础上，主要从三个方面对该检测算法进行了研究：
+首先是对现有算法框架进行改进与完善。这里采用更为普遍认可的DLIB人脸识别算法代替现有框架中的DRMF算法，并且对面部追踪方法和可视化结果输出等进行了进一步优化。完善后的算法在MAHNOB-HCI数据集以及我们自己采集的视频材料上加以测试，使得同等条件下心率检测准确率得到提升。
+另一方面，本次毕业设计对原算法框架建立了可视化输出，并采集了经过设计的不同实际场景下的数据集，
+通过定性分析得到了针对不同场景下心率测量方法研究方向的指导原则。
+最后，根据之前得到的原则，论文提出了针对头部转动这一实际场景下心率检测的新方法－－根据头部状态选定相对应的有效面部特征区域。本篇论文的结果将为后续实际场景下无接触式心率测量方法的研究指出明确的方向。
+
+%本文是中国科学技术大学本硕博毕业论文 \LaTeX{} 模板示例文件。本模板由
+%zepinglee和seisman创建，其前身是ywg@USTC创建的本硕博论文通用模板。
+%本模板遵循中国科学技术大学的论文写作规范，适用于撰写学士、硕士和博士学位论文。
+
+%本示例文档中会演示如何使用 \LaTeX{} 的一些基本命令以及本模板提供的一些特殊功能，
+%模板的选项及详细用法请参考模板说明文档 ustcthesis.pdf。
+
+\keywords{心率检测\zhspace{} 人脸识别\zhspace{} 人脸追踪\zhspace{} 数据集采集\zhspace{}
+\zhspace{} \zhspace{} \zhspace{} }
+\end{abstract}
+
+\begin{enabstract}
+Heart rate(HR) detection has been one of the hottest topics when it comes to the healthy issues. Unlike the traditional HR measurements based on ECG detecting machine, the computer-aided contact-free HR detection methods are generally more convenient, flexible and practical. However, current frameworks are only applicable under rigorous experimental contexts instead of realistic situations, where HR detection is more meaningful and necessary. In that case, this paper focuses on the development of contact-free HR detection methods under realistic situations. First of all, we improve the current algorithm framework by deploying DLIB method to detect region of interest(ROI) and two-way facial tracking to make sure the effectiveness of ROI. Meanwhile, visualization output has been created and added to the former framework as an important step. Thereafter, the accuracy of the whole framework has been promoted when tested on MAHNOB-HCI database and our self-collected materials. Secondly, new datasets are collected under designed practical scenarios. By utilizing the updated framework with visualization output, we analyze our self-recorded materials qualitatively and conclude a guideline for further studies. Thirdly, based on the guideline, we propose a ROI-selecting method specifically for head rotation situation. 
+
+All in all, this paper propose a guideline for further contact-free HR detection methods studies under practical conditions and implement the current algorithm, which indicates the potency of deploying computer-aided method to detect HR in real life.
+
+
+\enkeywords{Heartrate detection, Face recognition, Face tracking, Dataset collection, Output visualization}
+\end{enabstract}

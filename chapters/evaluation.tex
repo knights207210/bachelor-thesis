@@ -1,0 +1,311 @@
+\chapter{Evaluation}
+\citestyle{ustcnumerical}
+In this chapter, we evaluate our improved framework's performance both on MAHNOB-HCI database and self-collected test materials. All the experiments are finished using MATLAB 2016a under Linux operating system. Quantitative analysis and results discussion are also included.
+
+\section{Evaluation on MAHNOB-HCI database}
+The purpose of the evaluation on MAHNOB-HCI is to demonstrate that our improved framework have a reliable performance on non-intrusive HR detection. It is just a pre-step for our evaluation on self-collected materials in next section. As we have mentioned before, MAHNOB-HCI database involves 27 subjects(15 females and 12 males) and we use 527 video clips with resolutions of 780 x 580 as our materials. All the videos' frame rate is 61 fps. Our interested range is from the 306th frame to 2135th frame (5th second to 35th second) of each video clip. As for groundtruth, we extract the average HR (denoted as $HR_{gt}$, while the HR estimated by our algorithm is denoted as $HR_{video}$) each second from the synchronously collected ECG.
+
+The parameters are set as follows. The normalizing window length is 2.4 multiplied video's frame rate, this is because 2.4s at least contains a complete pulse period. The motion elimination window length is video's framerate divided by 4 and the window shift is divided by 2. $\lambda1$ and $\lambda2$ of the detrending method is 55 and 56. The percentage of discarded segments is 96\%. The PSD window length is 13 multiplied by video's frame rate. What's more, we use the two-way tracking method in this evaluation. The 75th frame is chosen as the initial position. 
+
+Various kinds of statistics have been used to evaluate the outcome of HR detection method. Among those, six statistics including $HR_{error}$, $M_e$, $SD_e$, $RMSE$, $M_{eRate}$ as well as $\gamma$ are recognized for being able to evaluate the method in all aspects comprehensively\cite{li2014remote}. To be more specific, $HR_{error}$ is the measure error, $M_e$ and $SD_e$ are the mean and standard deviation of measure error, $RMSE$ represents the root mean squared error, $M_{eRate}$ denotes the mean of error-rate percentage. $\gamma$ is one of Pearson's correlation coefficients, its another coefficient is $p$. This Pearson's method describe the linear relationship between $HR_{video}$ and $HR_{gt}$. The $\gamma$ value varies between 1 and -1, where $\gamma$ = 1 indicates the positive correlation and $\gamma$ = -1 indicates the negative. Usually, when $p$ <0.01, the result of linear correlation can be accepted statistically. In conclusion, $HR_{error}$,$RMSE$ and $M_{eRate}$ reflect the level of measure error whereas $M_e$ and $SD_e$ indicate the distribution of error. Formula 4.1 to 4.5 elaborate each statistic.
+     
+    \begin{equation}
+        HR_{error} = HR_{video}-HR_{gt},
+    \end{equation}
+
+    \begin{equation}
+        M_e = \frac{1}{N}\sum_{v=1}^{N}HR_{error}(v),
+    \end{equation} 
+
+    \begin{equation}
+        SD_e = \sqrt{\frac{1}{N}\sum_{v=1}^{N}(HR_{error}(v)-\overline{HR}_{error})^{2}},
+    \end{equation} 
+
+    \begin{equation}
+        RMSE = \sqrt{\frac{1}{N}\sum_{v=1}^{N}HR_error(v)^{2}},
+    \end{equation} 
+
+    \begin{equation}
+        M_{eRate} = \frac{1}{N}\sum_{v=1}^{N}\frac{|HR_{error}(v)|}{HR_{gt}(v)},
+    \end{equation} 
+
+where N is the number of videos(527).
+
+We test our improved framework on MAHNOB-HCI step by step and the results are shown in table. 4.1. We also choose Poh's results in 2010, Kwon's results in 2012, Poh's results in 2010, Balakrishnan's results in 2013 and Ren Li's results in 2016 to make comparison with. 
+
+
+%\newcommand{\tabincell}[2]{\begin{tabular}{@{}#1@{}}#2\end{tabular}}
+\begin{table}[ht]
+\centering
+\caption{Related methods and results} \label{tab:simpletable}
+\begin{tabular}{|c|c|c|c|c|}
+    \hline
+    \tabincell {c} {Method} & \tabincell{c} {$M_e$($SD_e$)\\(bpm)} & \tabincell{c}{$RMSE$\\(bpm)} & \tabincell{c}{$M_{eRate}$} &\tabincell{c}{$\gamma$}\\
+    \hline
+     \tabincell {c} {Poh2010} & \tabincell {c}{-8.95(24.3)} & \tabincell {c}{25.9} & \tabincell {c}{25.0\%} & \tabincell {c}{0.08}\\
+    \hline
+     \tabincell {c} {Haan2013} & \tabincell {c}{4.62(6.50)} & \tabincell {c}{6.52} & \tabincell {c}{6.39\%} & \tabincell {c}{0.82}\\
+    \hline       
+     \tabincell {c} {Tarassenko2014} & \tabincell {c}{3.0} & \tabincell {c}{-} & \tabincell {c}{-} & \tabincell {c}{0.80} \\
+    \hline
+    \tabincell {c} {Li2014} & \tabincell {c}{-3.30(6.9)} & \tabincell {c}{7.6} & \tabincell {c}{6.9\%} & \tabincell {c}{0.81*} \\
+    \hline
+     \tabincell {c} {Tuyakov2016} & \tabincell {c}{-3.19)(5.81)} & \tabincell {c}{6.23} & \tabincell {c}{5.93\%} & \tabincell {c}{0.83} \\
+    \hline
+    \tabincell {c} {RenLi2016} & \tabincell {c}{-2.81(6.1)}& \tabincell {c}{6.7} & \tabincell {c}{6.4\%} & \tabincell {c}{0.86*} \\
+    \hline
+    \tabincell {c} {Ours} &\tabincell {c}{   } &\tabincell {c}{   } &\tabincell {c}{   } & \tabincell {c}{   } \\
+    \tabincell {c} {Step 1+4} &\tabincell {c}{-3.67(7.08)} &\tabincell {c}{7.97} &\tabincell {c}{7.28\%} & \tabincell {c}{0.80} \\
+    \tabincell {c} {Step 1+2+4} &\tabincell {c}{-2.83(7.04)} &\tabincell {c}{7.42} &\tabincell {c}{7.10\%} & \tabincell {c}{0.80} \\
+    \tabincell {c} {All steps} &\tabincell {c}{-2.54(6.38)} &\tabincell {c}{6.87} &\tabincell {c}{6.46\%} & \tabincell {c}{0.84} \\
+    \hline
+
+
+\end{tabular}
+\note{＊represents that the linear coefficient $p$ is 0.01}
+\end{table}
+
+Furthermore, visualization outputs are also generated(because there is no head rotating or other significant actions, we don't use rectified ROI ). We take the first trail of subject one in the database as an example and Fig. 4.1 is one of the frame from our output video. This visualization result indicates that 1)the ROI defining and rigid-movement removing is successful; 2)the 2501th and 3610th frame show significant movement, which is consistent with the input video; 3) the signal recovered from sub-ROI could also be used to estimate HR but the accuracy is not as good as ROI. This is because the original ROI have larger size, which will smooth the noise to deeper degree. In short, these results successfully verify that our improved framework is effective under strict-controlled situations. On the other hand, from this table we could say that recent methods cannot make great progress on MAHNOB-HCI database. That means that it is definitely necessary to build a new reliable database.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=10cm]{4_1.eps}
+\caption{visualization of MAHNOB-HCI}\label{fig:noted-figure}
+%\note{the solid lines represent the time histogram of the spontaneous activities of an old monkey cell(gray) and a young monkey cell (black). The bin-width is 1}
+\end{figure}
+
+\section{Evaluation on New Test Materials}
+The aim of the evaluation on our self-collected materials is to visualize and detect the probable problems during the HR measurement under various realistic situations. Here, the evaluation will be conducted from these aspects: head movement, illumination variation, speaking, glass wearing, making up and skin colors. These aspects also work in concert with our principles when designing scenarios. During the evaluation, we set the error region as -5 to 5 beats per minute, which means that the HR estimation is considered acceptable when the measure error is within this range. What's more, the framework adopt the method of defining ROI frame by frame instead of two-way tracking in case that the ROI tracking fails. The ground truth of the PPG signal is extracted through the blue bar based method motioned in Chapter 3 and the HR ground truth is read directly from the HR detector's screen(after averaging).
+
+\subsection{Evaluation with Staying Still Scenario}
+We first evaluate on the staying still scenario to see whether our framework would work on self-collected materials. We ask our subject to stay stationary in front of the camera. The video clip is recorded with the resolution of 1080p at 60 fps and we keep the parameters unchanged.  Fig. 4.2 shows the ground truth analysis and visualization output. The result is demonstrated in Table. 4.2.
+
+
+
+\begin{table}[htbp]
+\centering
+\caption{Result under staying still scenario} \label{tab:simpletable}
+\begin{tabular}{|c|c|}
+    \hline
+     & Value(bpm) \\
+    \hline
+    Ground truth & 63 \\
+    \hline
+    Result & 61.7383 \\
+    \hline
+\end{tabular}
+%\note{注释里要写明每个统计量}
+\end{table}
+
+\begin{figure}[ht]
+\subfigure[Ground truth analysis]{
+\includegraphics[width=8cm,height=5cm]{4_2a.eps}}
+\hspace{-0.3in}
+\subfigure[Visualization output]{
+\includegraphics[width=8cm,height=5cm]{4_2b.eps}}
+\caption{Ground truth analysis and visualization output under staying still scenario}\label{fig:noted-figure}
+%\note{the solid lines represent the time histogram of the spontaneous activities of an old monkey cell(gray) and a young monkey cell (black). The bin-width is 1}
+\end{figure}
+
+
+From the Table. 4.2, the HR measurement of our self-collected material is acceptable. The visualization output clearly shows procedure of the ROI defining, PPG signal recovering and HR estimation. And the ground truth matches with our recovered PPG signal(especially the peaks' position). In this case, the evaluation testifies the effectiveness of our framework on self-collected videos.
+
+\subsection{Evaluation with Head Movement}
+In this section, we will discuss about the effect of head rotation, which is one of the problems proposed by Li's paper. We have recorded a video clip with a subject's head rotating towards both left and right sides. The video is 1080p at 60 fps. After deploying the framework, we get the value of estimated HR and visualization output(all the parameters are the same as before).  The result is demonstrated in Table. 4.3 and Fig. 4.3.
+
+
+\begin{table}[htbp]
+\centering
+\caption{Result under head rotation scenario} \label{tab:simpletable}
+\begin{tabular}{|c|c|}
+    \hline
+     & Value(bpm) \\
+    \hline
+    Ground truth & 62.75 \\
+    \hline
+    Result(original ROI) & 72.6773 \\
+    \hline
+\end{tabular}
+%\note{注释里要写明每个统计量}
+\end{table}
+
+
+\begin{figure}[ht]
+\subfigure[Ground truth analysis]{
+\includegraphics[width=8cm,height=5cm]{4_3a.eps}}
+\hspace{-0.3in}
+\subfigure[Visualization output]{
+\includegraphics[width=8cm,height=5cm]{4b.eps}}
+\caption{Ground truth analysis and visualization output under head rotation scenario}\label{fig:noted-figure}
+%\note{the solid lines represent the time histogram of the spontaneous activities of an old monkey cell(gray) and a young monkey cell (black). The bin-width is 1}
+\end{figure}
+
+
+
+From the result, we find that our framework fails in the step of ROI defining. In the frames with subject’s head turning to left/right side, ROI's size shrinks greatly and includes some pixels outside face region. The DLIB method even fails to find any face in some frames. When referring to the visualization output, we could clearly see that in the 128th frame, subject begins to rotate his head to his left side and in 248th frame, he turns to right. The PPG value recovered from original ROI fluctuate more intensely around these frames. At the same time, we find that the signal recovered from sub-ROI on the left side of subject's face stays smooth in the 248th frame but begin to wave when subject rotates to left, and the signal from sub-ROI on the right face also responds to his movements in the same way. 
+
+This visualization output inspires us to propose an innovative method to deal with this head rotation problem -- through switching the ROI. This method will be discussed more specifically in Chapter six.
+
+\subsection{Evaluation on Illumination Variation}
+We choose the car-driving scenarios to study the effect of background illumination variation. When subject is driving a car, the illumination variation can be very complicated, like the shadow of a passing building, the shelter of clouds, the lights from a oncoming car and so on. Under this kind of illumination situation, the evaluation can be more meaningful and promising. 
+We have recorded two clips of a subject's driving a car. One is outdoor and the other is in the garage. The resolution is 1080p with frame rate at 60 fps. All the parameters are same as before. Some example frames are demonstrated in Fig. 4.4a and Fig. 4.4b. Table 4.4 shows the results of HR estimated by our framework.
+
+
+\begin{table}[htbp]
+\centering
+\caption{Result under illumination variation scenario} \label{tab:simpletable}
+\begin{tabular}{|c|c|}
+    \hline
+     & Value(bpm) \\
+    \hline
+    Ground truth & 98 \\
+    \hline
+    Result(original ROI) & 69.2035 \\
+    \hline
+\end{tabular}
+%\note{注释里要写明每个统计量}
+\end{table}
+
+\begin{figure}[ht]
+\subfigure[Example frame where DLIB method fails]{
+\includegraphics[width=8cm,height=5cm]{4_4a.eps}}
+\hspace{-0.3in}
+\subfigure[Visualization output]{
+\includegraphics[width=8cm,height=5cm]{4_4b.eps}}
+\caption{Visualization output under illumination variation scenario}\label{fig:noted-figure}
+%\note{the solid lines represent the time histogram of the spontaneous activities of an old monkey cell(gray) and a young monkey cell (black). The bin-width is 1}
+\end{figure}
+
+From the results, we can say that our current framework cannot handle such complicated illumination variation situations: the estimated value is obviously lower than ground truth. With the visualization output, we find that the error occurs in both ROI defining step and normalizing step. For example, in the 349th frame, the DLIB method fails to detect the facial landmarks because of the illumination conditions. The sunlight outside the car is strong and makes the face region too dark to be detected. What’s more, after eliminating this noise, we still find that the result is too far from the ground truth. This finding indicates that our current normalizing method cannot eliminate the influence from background illumination variation and new algorithm robust to complicated light changes need to be proposed.
+
+\subsection{Evaluation on Speaking Scenario} 
+Speaking is a common behavior in our daily life. We choose this speaking scenario since it involves the facial movement. The subject is asked to sit in front of a camera and talk, which is just like chatting on Skype. We believe that this scenario is typical and meaningful. The video is recorded with 1080p at 60 fps. All the parameters are same as mentioned before. Table. 4.5 and Fig. 4.5 shows the result of our evaluation. 
+
+\begin{table}[htbp]
+\centering
+\caption{Result under speaking scenario} \label{tab:simpletable}
+\begin{tabular}{|c|c|}
+    \hline
+     & Value(bpm) \\
+    \hline
+    Ground truth & 70 \\
+    \hline
+    Result(original ROI) & 80.9191 \\
+    \hline
+\end{tabular}
+%\note{注释里要写明每个统计量}
+\end{table}
+
+\begin{figure}[ht]
+\subfigure[Ground truth analysis]{
+\includegraphics[width=8cm,height=5cm]{4_5a.eps}}
+\hspace{-0.3in}
+\subfigure[Visualization output]{
+\includegraphics[width=8cm,height=5cm]{4_5b.eps}}
+\caption{Ground truth analysis and visualization output under speaking scenario}\label{fig:noted-figure}
+%\note{the solid lines represent the time histogram of the spontaneous activities of an old monkey cell(gray) and a young monkey cell (black). The bin-width is 1}
+\end{figure}
+
+After qualitatively analyze the result and visualization output, we could say that the movement of the subject's mouth could effect the result of HR estimation through influencing the size of ROI and illumination reflection inside ROI. In the 180th frame, the subject begins to open his mouth and talk and the recovered PPG value starts to fluctuate correspondingly. This finding inspire us to renew the ROI defining. For example, when the subject opens his mouth, the cheek regions are definitely influenced. However, if we narrow down the ROI into central face or change the ROI into forehead and chin regions, this kind of impact factor can be avoided. 
+
+\subsection{Evaluation on Glass Wearing}
+This section studies the effect of glasses. Here, we first propose a guess that since we have already excluded the region around eyes, the eye glasses should not be effect the result. In the clip, the subject sits still in front of the camera with his glasses on. The video is recorded at 60 fps with 1080p resolution and parameters are kept consistent. The following figures and table illustrate the outcome of our framework evaluation. 
+
+
+\begin{table}[htbp]
+\centering
+\caption{Result under glass wearing scenario} \label{tab:simpletable}
+\begin{tabular}{|c|c|}
+    \hline
+     & Value(bpm) \\
+    \hline
+    Ground truth & 62 \\
+    \hline
+    Result & 62.3377 \\
+    \hline
+\end{tabular}
+%\note{注释里要写明每个统计量}
+\end{table}
+
+
+\begin{figure}[ht]
+\subfigure[Ground truth analysis]{
+\includegraphics[width=8cm,height=5cm]{3_5b.eps}}
+\hspace{-0.3in}
+\subfigure[Visualization output]{
+\includegraphics[width=8cm,height=5cm]{4_6b.eps}}
+\caption{Ground truth analysis and visualization output under glass wearing scenario}\label{fig:noted-figure}
+%\note{the solid lines represent the time histogram of the spontaneous activities of an old monkey cell(gray) and a young monkey cell (black). The bin-width is 1}
+\end{figure}
+
+The evaluation result testifies our guess. The error value of our estimated HR is within the measure error and the ground truth fluctuation has the same tendency as our recovered signal. There is also no abnormal position that appears in the visualization output. As a consequence, the glass wearing will not influence the HR measurement.
+
+\subsection{Evaluation on Make Up}
+When the subject is wearing heavy make up, it can also be an interesting situation to study with. In order to evaluate the framework under this scenario, we download a video with a subject wearing heavy make up from Internet. The video at 25 fps with 1080p resolution and parameters are adjusted according to frame rate. The following figures and table give the result of evaluation.
+
+
+
+\begin{table}[htbp]
+\centering
+\caption{Result under make up scenario} \label{tab:simpletable}
+\begin{tabular}{|c|c|}
+    \hline
+     & Value(bpm) \\
+    \hline
+    Result & 32.3333 \\
+    \hline
+\end{tabular}
+%\note{注释里要写明每个统计量}
+\end{table}
+
+
+\begin{figure}[ht]
+\subfigure[Visualization output]{
+\includegraphics[width=8cm,height=5cm]{4_7.eps}}
+\hspace{-0.3in}
+\subfigure[PSD of HR estimation]{
+\includegraphics[width=8cm,height=5cm]{4_7b.eps}}
+\caption{Ground truth analysis and visualization output under different skin colors scenario}\label{fig:noted-figure}
+%\note{the solid lines represent the time histogram of the spontaneous activities of an old monkey cell(gray) and a young monkey cell (black). The bin-width is 1}
+\end{figure}
+
+Although there is no ground truth to refer, the value of the evaluation result is too low to be considered as normal HR. From the visualization output, we could notice that although the ROI detection is normal, the PPG signal recovered is too smooth to be used in the following step. Fig. 4.7b shows the PSD result of this heavy make up scenario. It also confirms that the illumination variation inside ROI is too small to detect. To think deeper, we find that because the heavy make up covers the whole face region, the illumination variation inside ROI can not be as that obvious as the normal situation. In that case, an amplification algorithm needs to be developed if the framework hopes to deal with this kind of situation. This newly improved algorithm could magnify the amplitude of the variation and make the detection process run more easily.
+
+\subsection{Evaluation on Different Skin Colors}
+Skin colors could also be an important impact factor worth consideration. In this evaluation, our materials are from MMSE-HR database introduced before. We choose two video clips from this database and each subject has different skin colors. These videos are recorded under controlled experimental conditions with 25 fps and parameters of the framework changes with the frame rate. The ground truth is from the database given. Table. 4.8 shows the value of our HR measurement and Fig. 4.8 is the visualization output.
+
+
+\begin{table}[htbp]
+\centering
+\caption{Result under different skin colors scenario} \label{tab:simpletable}
+\begin{tabular}{|c|c|}
+    \hline
+     & Value(bpm) \\
+    \hline
+    Ground truth(with light color) & 66.3416 \\
+    \hline
+    Ground truth(with dark color) & 86.0485 \\
+    \hline
+    Result(with light color) & 61.8462 \\
+    \hline
+    Result(with dark color) & 33.2000 \\
+    \hline
+\end{tabular}
+%\note{注释里要写明每个统计量}
+\end{table}
+
+\begin{figure}[ht]
+\subfigure[Visualization output with light skin color]{
+\includegraphics[width=8cm,height=5cm]{4_8a.eps}}
+\hspace{-0.3in}
+\subfigure[Visualization output with dark skin color]{
+\includegraphics[width=8cm,height=5cm]{4_8b.eps}}
+\caption{visualization output under different skin colors scenario}\label{fig:noted-figure}
+%\note{the solid lines represent the time histogram of the spontaneous activities of an old monkey cell(gray) and a young monkey cell (black). The bin-width is 1}
+\end{figure}
+
+From the two results’ comparison, we find that the estimated HR of subject with light skin color is closer to its ground truth than the subject with dark skin color. The visualization outputs indicate that there is no abnormal in the step of ROI defining and HR estimation. As a result, we make a guess that the problem might happen in the step of illumination variation. Since the MMSE-HR datasets were collected under controlled environment and there is only one light source in front of the subject, the influence of illumination variation is more highlighted. In this case, the skin color can impact the illumination variation through its absolute RGB value. For eliminating the impact of skin color, we think a reasonable direction is as same as the last section -- amplification. Through magnify the value variation inside ROI, this kind of impact can be removed more thoroughly.
+
+
+\section{Discussion of Results}
+We have qualitatively analyze the influence of head rotation, illumination variation, talking, facial wearing(glass and make up and skin colors. However, there might be some other possible problems that could affect the evaluation results. For the step of ROI detection, the expression on face will effect the size of ROI. At the same time, if there are more than two faces appear in one frame, we have to design another algorithm to tell which face is our interested face (This kind of situation will probably happens when one subject is being recording video while other passing-bys are also captured). For the step of illumination variation, the beard might change the RGB values of pixels. The subject's age might also be an impact of factor since the wrinkles might influence the value of color traces extracted from ROI. What's more, if the background is illuminated by artificial light, the frequency of the light flash can introduce regular noise into our PPG signal. For the step of eliminating the non-rigid movement, if the subject continues to move significantly(like when he is running or jumping), the method of just discarding frames with big SD value is not suitable since so many frames needs to be discarded under this kind of situation. For the step of HR estimation, the parameters play a more important role than scenarios. In this step, the frame rate of the video, the window size of the temporal filters and so on can also be a possible impact factors. 

@@ -1,0 +1,166 @@
+\chapter{The Improved Algorithm Framework}
+\citestyle{ustcnumerical}
+The last chapter discussed about the basic structure of the current algorithm framework and theory behind. Based on that, we will introduce our newly improved framework and self-collected materials in this chapter. The improved framework has better performance on MAHNOB-HCI database and new materials under realistic situations, which indicates a more promising potential to have accurate HR detection in further researches.
+
+\section{Improvement of the Current Algorithm}
+\subsection{Updated ROI detecting and tracking method}
+The previous facial landmarks detecting is through DRMF method. However, this method's time complexity is higher than DLIB method proposed by Hsu et al.\cite{hsu2002face,king2009dlib} In our study, when we deploy DRMF method and DLIB method on one same frame, the actual average running time are 70.60s and 2.21s.
+What's more, when comparing with DRMF method, DLIB method has the advantage in terms of the robustness against complicated situations. Therefore, our updated framework utilizes DLIB method to determine facial landmarks.
+
+The former discusses about one-frame situation. However, when we want to deal with a whole video and eliminate the rigid head movement, we have to make sure that color traces are extracted from the same ROI in every frame we interest in. Generally speaking, there are two ways to solve this problem. The first way is to utilize face detecting method on every frame. This solution requires the detecting algorithm to work in high time efficiency. The second way is through feature points tracking, like the KLT tracking method we mentioned before. In our updated framework, we take both situations into consideration. If the framework is used for just few videos or the subjects has so great movement that the tracking method fails, DLIB method is dircertly applied on each frame. On the other hand, if a set of videos need to be processed and the subject barely move during the whole time(like MAHNOB-HCI database), we use the DLIB method and KLT tracking method together to complete this step. 
+
+More than that, we also update our tracking method so that it can have better performance on eliminating rigid head movement. The origin tracking method just realize one-way tracking, which means that the transformation matrix can only track the next frame based on the former frame. However, if the tracking has already failed on the former frame, there is no way that the next frame could output accurate results. Fig .3.1a shows the video where tracking method fails and Fig .3.1b shows the video where DLIB method is applied on every frame. 
+
+\begin{figure}[ht]
+\subfigure[Original mathod fails to track the face]{
+\includegraphics[width=8cm,height=5cm]{3_1a.eps}}
+\hspace{-0.5in}
+\subfigure[Improved method succeeds in tracking]{
+\includegraphics[width=8cm,height=5cm]{3_1b.eps}}
+\caption{Photoplethysmography }\label{fig:noted-figure}
+%\note{the solid lines represent the time histogram of the spontaneous activities of an old monkey cell(gray) and a young monkey cell (black). The bin-width is 1}
+\end{figure}
+
+In view of this situation, we design a two way tracking method. This method allows us to track both forward and backward on the video. We first step through the whole input video and find both the beginning and the end frame. Then the KLT method is used twice, one time forward and second time backward, and two transformation matrixes are calculated. After determining an initial position, the two-way tacking method could start working from that point by using both matrixes and generate raw PPG signals. Formula 3.1 shows the theory of tracking backward.
+
+
+	\begin{equation}
+        Q_{i-1} = BQ_i,
+    \end{equation} 
+
+This two-way tracking method could greatly prevent the situation discussed before from happening and ensure the accuracy of ROI defining. However, this method could still fail when the subjects conduct significant actions. In that case, detecting ROI frame by frame could be the most reliable way.
+%When the value of forward-tracking-based color traces have an obvious jump or drop(the cretiera is that if the following value is higher or lower more than 50\% of the previous value, we say that there is an obvious jump/drop), we record the position and start using the tracking method in both forward and backward directions.(see Fig .3.3). Fig .3.2c shows that the two-way tracking method has better performance.
+
+\subsection{Visualization Output and Rectified ROI}
+We also add visualization output of each stage in the framework as the fifth step. The visualization output allows the framework to generate a video with abundant information about each step's result. With the aid of this output video, we can clearly and easily know in which step the error happens, especially when the framework gives a wrong HR detection result. At the same time, the choosing and calculating of rectified ROI is also worthwhile mentioning. Since there will be some realistic scenarios where the subject has big movement, the original ROI might include non-face-region pixels(like the situations where the subject rotate his head). In this case, we use rectified ROI as a substitute to get higher HR detection accuracy. The rectified ROI makes sure that all the pixels inside are on subject's face. Fig. 3.2 is one frame out of an example visualization output video and Fig. 3.3a, Fig. 3.3c shows our sub-ROI and rectified ROI selection.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=10cm]{3_2a}
+\caption{Visualization output}\label{fig:noted-figure}
+%\note{the solid lines represent the time histogram of the spontaneous activities of an old monkey cell(gray) and a young monkey cell (black). The bin-width is 1}
+\end{figure}
+
+\begin{figure}[ht]
+\subfigure[The definition of sub-ROI]{
+\includegraphics[width=8cm,height=5cm]{3_2b.eps}}
+\hspace{-0.3in}
+\subfigure[The definition of rectified ROI]{
+\includegraphics[width=8cm,height=5cm]{3_2c.eps}}
+\caption{Visualization output and rectified ROI }\label{fig:noted-figure}
+%\note{the solid lines represent the time histogram of the spontaneous activities of an old monkey cell(gray) and a young monkey cell (black). The bin-width is 1}
+\end{figure}
+
+The basic visualization output video's structure is as follows. On top of the visualization output frame, there is a figure of the subject's face with detected landmarks(white marks) and ROI mask(black region). This figure will clearly tell us whether our DLIB method or tracking method works. The first plot under the figure is the recovered PPG signal. This signal has already been eliminated the influence from rigid head movement(in step 2) and illumination variation(in step three). In that case, if something abnormal happens with plot one but ROI detecting and tracking is correct, we could say that the framework fails to deal with the complicated illumination situations. The second plot demonstrates the recovered PPG signals of all the sub-ROIs and rectified ROI(if we use). Same analysis as plot one can be applied directly on plot two. Furthermore, both plot one and plot two highlight the discarded segments chosen from non-rigid motion elimination step(step 4). At last, the third plot is the final HR detection result. As you can see, the little-sized labels are the exact values of HR estimation. From this plot, we could know whether or not the HR estimation step functions correctly. When put all these output frames together, we get the output video. Since all the plots' X axis are video frame numbers, we use a red vertical line as a timeline, in order to be more intuitional.
+
+
+\subsection{Improved Groundtruth Extraction}
+As we have mentioned before, it is very inconvenient to utilize ECG equipment to measure ground truth HR under realistic situations. In order to solve this problem, we choose a portable HR detector -- finger pulse oximeter heart rate monitor. It is shown in Fig. 3.4：
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=10cm]{3_4.eps}
+\caption{Finger pulse oximeter heart rate monitor}\label{fig:noted-figure}
+%\note{the solid lines represent the time histogram of the spontaneous activities of an old monkey cell(gray) and a young monkey cell (black). The bin-width is 1}
+\end{figure}
+
+We could get a relatively accurate HR directly from reading the screen. However, if we want to know more details about the ground truth, like the waveform, another computer vision method must be used here. We choose the small blue bar on the screen as a start point, which demonstrates the strength of PPG signal. We first define and track the ROI with the small blue bar inside and then calculate sum of every pixel value inside. Because there are only two kinds of pixel inside ROI, the lightened and the not-lightened, the sum of pixel values can clearly illustrate the height of the bar, in other words the waveform of our ground truth PPG signal. Fig. 3.5a shows our ROI defining and Fig. 3.5b illustrates the ground truth PPG signal as well as recovered PPG signal.   
+
+
+\begin{figure}[ht]
+\subfigure[Blue bar region]{
+\includegraphics[width=8cm,height=5cm]{3_5a.eps}}
+\hspace{-0.5in}
+\subfigure[Ground truth and recovered PPG]{
+\includegraphics[width=8cm,height=5cm]{3_5b.eps}}
+\caption{Ground truth extraction}\label{fig:noted-figure}
+%\note{the solid lines represent the time histogram of the spontaneous activities of an old monkey cell(gray) and a young monkey cell (black). The bin-width is 1}
+\end{figure}
+
+After introducing all our improved points, the updated structure of our framework is demonstrated in Fig. 3.6.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=12cm,height = 8cm]{3_6.eps}
+\caption{The improved framework}\label{fig:noted-figure}
+%\note{the solid lines represent the time histogram of the spontaneous activities of an old monkey cell(gray) and a young monkey cell (black). The bin-width is 1}
+\end{figure}
+
+
+\section{Creating New Test Materials under Realistic Scenarios}
+In Introduction, the lack of test materials under realistic situations in terms of contact-free HR detection researches is mentioned. This finding motivates us to develop a dataset under different scenarios to help evaluate our algorithm in more aspects. 
+
+\subsection{background}
+Before starting designing scenarios, we need to systematically summarized and organized related datasets in order to distinguish our work from previous ideas. Table. 3.1 concludes some of the important related databases and their characteristics.
+
+\begin{table}[ht]
+\centering
+\caption{The related database} \label{tab:simpletable}
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+    \hline
+    \tabincell {c} {Related\\ database} & \tabincell{c} {Subjects \\nummber} & \tabincell{c}{Emotions} & \tabincell{c}{Head \\rotation} & \tabincell {c} {Audio}  & \tabincell {c} {3D} & \tabincell {c} {eye\\ gaze} & \tabincell {c} {EEG} \\
+    \hline
+     \tabincell {c} {MAHNOB} & \tabincell {c}{27} & \tabincell {c}{Induced \\ and \\ spontaneous} & \tabincell {c}{No} & \tabincell {c} {Yes} & \tabincell {c} {No} & \tabincell {c} {Yes} & \tabincell {c} {Yes} \\
+    \hline
+     \tabincell {c} {MMSE} & \tabincell {c}{140} & \tabincell {c}{Induced \\ and \\ spontaneous} & \tabincell {c}{Yes\\(three\\subjects)} & \tabincell {c} {No} & \tabincell {c} {Yes} & \tabincell {c} {Yes} & \tabincell {c} {No} \\
+     \hline
+     \tabincell {c} {MMI} & \tabincell {c}{90} & \tabincell {c}{Induced \\ and \\ spontaneous} & \tabincell {c}{No} & \tabincell {c} {Yes} & \tabincell {c} {No} & \tabincell {c} {No} & \tabincell {c} {No} \\
+     \hline
+     \tabincell {c} {DEAP} & \tabincell {c}{32} & \tabincell {c}{Induced \\ and \\ spontaneous} & \tabincell {c}{No} & \tabincell {c} {No} & \tabincell {c} {No} & \tabincell {c} {No} & \tabincell {c} {Yes} \\
+     \hline
+     \tabincell {c} {HUMAINE} & \tabincell {c}{-} & \tabincell {c}{Induced \\ and \\ spontaneous} & \tabincell {c}{Yes} & \tabincell {c} {Yes} & \tabincell {c} {No} & \tabincell {c} {No} & \tabincell {c} {No} \\
+
+
+    \hline
+\end{tabular}
+%\note{注释里要写明每个统计量}
+\end{table}
+
+Among all these databases, MAHNOB-HCI database is chosen as one of our evaluation materials. Briefly speaking, MAHNOB-HCI is a easily accessible database with large set of synchronous Physiological signals(including ECG). The videos involve both rigid head motion and background illumination variation, so that many researches have chosen this database to evaluate their algorithms. However, subjects are just required to stay stationary in front of the camera and there is only one light source that placed in front of the subject. This situation is too far away from our real life scenarios, which means that MAHNOB-HCI database also has its own limitations.
+
+Here is a brief introduction of other databases mentioned in table. 3.1: MMSE-HR is a emotion-related subset of a multimodal spontaneous emotion corpus(MMSE), which targets the HR measurement. This dataset is collected by Zhang et al.\cite{zhang2016multimodal} and has not been public yet. MMI is a web-based emotional database of posed and spontaneous facial expressions in the form of both static images and videos. This database is created by Pantic et al.\cite{valstar2010induced}
+Another notable database is HUMAINE database\cite{douglas2007humaine}. The videos from this database have abundant body gestures and emotions, making it one of the most challenging datasets in this field. DEAP(the Database for Emotion Analysis using Physiological Signals)\cite{koelstra2012deap} is created recently. Participants' spontaneous response to music clips are recorded and organized, so are their physiological signals.
+
+Inspired by these previous datasets, we choose to build a dataset with people's spontaneous reactions and abundant movements under different scenarios. The following sections will discuss about it more specifically.
+
+\subsection{Scenarios Designing}
+Based on the previous work and the objective of this paper, we have designed several scenarios to evaluate our updated framework under realistic situations. Basically, we take six factors into consideration: head movement, illumination variation, speaking, glass wearing, make up wearing and skin colors. In that case, we design 7 scenarios, they are: staying still, talking, head rotating, car driving, make up wearing, glass wearing, as well as people with different skin colors staying still. Table. 3.2 indicates which scenario involves which influencing factors.
+
+
+\begin{table}[ht]
+\centering
+\caption{Scenario designing} \label{tab:simpletable}
+\begin{tabular}{|c|c|c|c|c|}
+    \hline
+    \tabincell {c} {Scenario} & \tabincell{c} {Stay still} & \tabincell{c}{Light} & \tabincell{c}{Movement} & \tabincell {c} {Video source}\\
+    \hline
+     \tabincell {c} {Stay still} & \tabincell {c}{x} & \tabincell {c}{} & \tabincell {c}{} & \tabincell {c} {self-collected} \\
+    \hline
+     \tabincell {c} {Head rotation} & \tabincell {c}{} & \tabincell {c}{} & \tabincell {c}{x} & \tabincell {c} {self-collected} \\
+     \hline
+     \tabincell {c} {Car driving} & \tabincell {c}{} & \tabincell {c}{x} & \tabincell {c}{} & \tabincell {c} {self-collected} \\
+     \hline
+     \tabincell {c} {Speaking} & \tabincell {c}{x} & \tabincell {c}{} & \tabincell {c}{} & \tabincell {c} {self-collected} \\
+     \hline
+     \tabincell {c} {Glass wearing} & \tabincell {c}{x} & \tabincell {c}{} & \tabincell {c}{} & \tabincell {c} {self-collected} \\
+     \hline
+     \tabincell {c} {Make up} & \tabincell {c}{x} & \tabincell {c}{} & \tabincell {c}{} & \tabincell {c} {from Internet} \\
+     \hline
+     \tabincell {c} {Skin colors} & \tabincell {c}{x} & \tabincell {c}{} & \tabincell {c}{} & \tabincell {c} {from MMSE} \\
+
+
+
+
+
+
+    \hline
+    \end{tabular}
+%\note{注释里要写明每个统计量}
+\end{table}
+
+This table gives us a more specific clue on our next evaluation step.
+
+\subsection{Data Acquisition}
+There are two ways in which we get our test materials. One is through searching and downloading videos from the Internet(like YouTube), the other is through our own data capture system and volunteer. Table. 3.2 also indicates the source of our test materials. When recording the videos by ourselves, volunteer is asked to conduct consistent actions with designed scenarios. Every piece of materials is no less than 600 frames to make sure the algorithm functions normally. In addition, the data capture system includes a GoPro camera and a ground truth detector. 
+
+The GoPro camera can generate a video in different frame rates and be controlled by smartphone application. As for the ground truth detector, it can generate real-time HR(average), real-time respiration rate(average) and real-time PPG signal strength at the same time. All the data are recorded synchronously. 

@@ -1,0 +1,36 @@
+\chapter{Introduction}
+\citestyle{ustcnumerical}
+Heart rate(HR) is an important physiological indicator used to describe the number of the heart beats per minute. It carries abundant healthy information about human body. Traditional HR measurement involves the use of an electrocardiograph(ECG), which generates a pattern based on electrical activity of human's heart. Although the electronic measurement is proved to be accurate and effective\cite{mason2007electrocardiographic}, it could still be very inconvenient and troublesome, as the ECG machine requires the connection of electrodes with precise placement around the body. At the same time, ECG equipment could also be very uncomfortable for subjects, especially when wearing them for a long time. In that case, more and more attention is focused on the contact-free HR detection method with the aid of video-recording and computer vision.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=10cm]{1_1.eps}
+\caption{An example result from Li's paper}\label{fig:noted-figure}
+%\note{the solid lines represent the time histogram of the spontaneous activities of an old monkey cell(gray) and a young monkey cell (black). The bin-width is 1}
+\end{figure}
+
+The algorithm of realizing contact-free HR monitoring is based on the research presenting that skin color changes caused by cardiac pulse can be captured by ordinary cameras and analyzed by computers\cite{poh2010non,verkruysse2008remote}. Current investigations concerning this topic, like Li et al.'s work in 2014\cite{li2014remote}, have already reported good performance of this theory(Fig. 1.1) when evaluated on some databases(MAHNOB-HCI) with well controlled experiment conditions. However, in our real life, there is very little chance that these conditions, like subjects staying stationary, wearing few emotions and background with barely no light changes, could exist. When it comes to realistic situations, the background illumination variations and subject's head motion would greatly introduce noises into the signal recovered from skin-color variation. At the same time, the emotions on subject’s face could also influence the selection of region of interest(ROI). Although several works have brought up specific solutions to illumination and motion issues(Li's work is one of them), they still only have satisfied outcomes on MAHNOB-HCI dataset, not under realistic situations. Therefore, further studies aiming at contact-dree HR detection under practical situations would be needed and algorithm's robustness to environmental illumination variations, subject's movement as well as emotions on face should be definitely required. 
+
+In Practice, one of another big challenges is that there is no realistic materials aimed for contact-free HR detection. Even though the MAHNOB-HCI dataset is notable, it still suffers from various limitations including most subjects stay stationary with few emotions and little illumination changes.
+
+In this paper, we focus our attention on improving contact-free HR detection method under realistic situations. The remainder of this paper is organized as follows. Chapter two discusses about the theory of the current algorithm framework. Chapter three focuses on the improvement and innovative points on HR estimation algorithms and introduces new test datasets collection. The results will be used for evaluation and qualitative analysis, which is demonstrated thoroughly in Chapter four. Moreover, Chapter five would conclude a guideline, indicating tangible research directions for each realistic scenarios. In Chapter six, innovative methods aimed at head rotating and emotion wearing scenarios are proposed and discussed. Finally in Chapter seven, the paper is concluded and further work is presented.
+
+Thus, the contribution of this paper is three-fold:
+\begin{itemize}
+	\item Current algorithm framework is improved. Higher accuracy of HR detection comparing to former researches has been achieved and visualized output has been added so that users could evaluate video materials more intuitional.
+	\item We propose a guideline and an innovative dataset aiming at the issue of contact-free HR detection under realistic situations. As is shown, both the guideline and dataset could be very valuable for related upcoming studies and database construction.
+	\item We put forward new methods to realize contact-free HR detection under head rotating and emotion wearing scenarios. Since there is very little studies concerning such specific items, our work could be very inspiring and delighting.
+\end{itemize}
+%\section{模板简介}
+%测试脚注\footnote{分别编号}。
+
+%\subsection{模板介绍1}
+
+%\subsubsection{模板测试}
+
+%\subsection{模板介绍2}
+
+%\section{系统要求}
+
+%\section{问题反馈}
+%测试脚注\footnote{脚注2}

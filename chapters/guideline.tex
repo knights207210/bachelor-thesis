@@ -1,0 +1,81 @@
+\chapter{Deriving Guideline for Further Studies}
+\citestyle{ustcnumerical}
+Based on the evaluation results and qualitative analysis in Chapter four, we could derive a guideline for the further work in database construction. In this chapter, we will first discuss about the impact of video recording conditions for database constructions and then conclude the guidelines.
+
+\section{Impact of Recording Conditions} 
+From the former evaluation on our self-collected materials, there is so much experience that can be concluded and learnt from. In this section, we'd like to generalize a conclusion about the impact of recording conditions and this will lead to the formation of our guideline. 
+
+The conclusion is listed as follows: 1)the significant movement will make the ROI defining step fail; 2)the illumination variation can prevent both ROI defining and illumination variation elimination from working; 3)although the talking scenario has better performance, the size of ROI is still influenced by the movement of the subject's mouth and leads to measure error; 4)the glass wearing scenarios seems not have too much effect since our ROI exclude the region around eyes; 5)the heavy make up makes the illumination inside ROI hard to detect, so that the step of PPG signal recovering fails; 6)skin colors are not the main impact factor but it still impacts the illumination variation detection inside ROI. 
+
+\section{Guideline}
+This guideline for further study concerning non-intrusive HR detection under realistic situations is very crucial and inspiring. Its contents are derived from our former discussion and here, we make it into a table to be more tangible. 
+
+\begin{table}[ht]
+\centering
+\caption{The guideline} \label{tab:simpletable}
+\begin{tabular}{|c|c|c|c|}
+    \hline
+    \tabincell {c} {Situation} & \tabincell{c} {Problem Location} & \tabincell{c}{Further Research\\Direction} & \tabincell{c}{Notes} \\
+    \hline
+     \tabincell {c} {Head Rotation} & \tabincell {c}{ROI defining
+} & \tabincell {c}{Find the new ROI \\defining method or \\use sub-ROI switching
+} & \tabincell {c}{This situation could \\ also be solved\\ through the \\improvement of data\\ acquisition, by using \\cameras from various \\angles
+}\\
+    \hline
+     \tabincell {c} {Illumination\\ Variation} & \tabincell {c}{ROI defining and \\normalizing
+} & \tabincell {c}{Improve the \\robustness of current \\face recognition \\algorithm and\\ illumination variation \\elimination algorithm
+} & \tabincell {c}{   }\\
+    \hline       
+     \tabincell {c} {Speaking} & \tabincell {c}{ROI defining(the size \\of ROI) and illumination\\ variation(light reflected)
+} & \tabincell {c}{Change the ROI \\defining criteria:\\ narrow down the ROI \\or change the ROI into\\ forehead and chin \\regions
+} & \tabincell {c}{   }  \\
+    \hline
+    \tabincell {c} {Glass \\Wearing} & \tabincell {c}{No problem detected} & \tabincell {c}{   } & \tabincell {c}{   }\\
+    \hline
+     \tabincell {c} {Make Up} & \tabincell {c}{PPG signal recovering\\( illumination \\variation is too small \\to be detected)
+} & \tabincell {c}{Develop an \\amplification \\algorithm
+} & \tabincell {c}{If the framework \\hopes to deal with \\this kind of situations
+} \\
+    \hline
+    \tabincell {c} {Skin Colors} & \tabincell {c}{Normalizing and PPG \\signal recovered
+}& \tabincell {c}{Develop an \\amplification \\algorithm
+} & \tabincell {c}{Improve the lightning \\conditions when \\record the video
+} \\
+    \hline
+\end{tabular}
+%\note{注释里要写明每个统计量}
+\end{table}
+
+
+
+
+
+
+\begin{table}[ht]
+\centering
+\caption{The guideline(cont.)} \label{tab:simpletable}
+\begin{tabular}{|c|c|c|c|}
+    \hline
+    \tabincell {c} {Situation} & \tabincell{c} {Problem Location} & \tabincell{c}{Further Research\\Direction} & \tabincell{c}{Notes} \\
+    \hline
+    \tabincell {c} {Other possible \\problems\\(expression, \\more than one face)
+} & \tabincell {c}{ROI defining}& \tabincell {c}{Build a criteria to \\judge the right ROI \\and improve the ROI \\defining algorithm} & \tabincell {c}{   } \\
+      \hline
+    \tabincell {c} {Other possible \\problems\\(beard,wrinkles)
+} & \tabincell {c}{Color traces extraction}& \tabincell {c}{Amplification \\algorithm and more\\ accurate ROI defining} & \tabincell {c}{   } \\
+     \hline
+    \tabincell {c} {Other possible \\problems\\(constant\\movements)
+} & \tabincell {c}{Motion elimination}& \tabincell {c}{More reasonable \\motion elimination \\algorithm} & \tabincell {c}{   } \\
+    \hline
+
+\end{tabular}
+%\note{注释里要写明每个统计量}
+\end{table}
+
+
+
+
+
+
+
+

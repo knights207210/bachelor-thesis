@@ -1,0 +1,79 @@
+\chapter{Innovative Method Aimed at Head Rotation Scenario}
+\citestyle{ustcnumerical}
+Based on the discussion of the evaluation results on head rotation scenario and the guideline from last chapter, we find that the noise induced by head rotation can be eliminated through switching ROI, in other words, we use rectified ROI to recover PPG signals and estimate HR.
+
+\section{Algorithm Description}
+From the visualization output in Fig. 4.3, the subject begins to turn his head around 128th frame and 248the frame. In order to determine from which frame the ROI should be changed, we need to bring up with some criteria to make judgements. Fig. 6.1 shows the distribution of the facial landmarks determined by DLIB method.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=10cm]{6_1.eps}
+\caption{The distribution of facial landmarks detected by DLIB method}\label{fig:noted-figure}
+%\note{the solid lines represent the time histogram of the spontaneous activities of an old monkey cell(gray) and a young monkey cell (black). The bin-width is 1}
+\end{figure}
+
+\begin{figure}[ht]
+\subfigure[The landmarks get together]{
+\includegraphics[width=8cm,height=5cm]{6_2a.eps}}
+\hspace{-0.3in}
+\subfigure[The landmarks outside the face region]{
+\includegraphics[width=8cm,height=5cm]{6_2b.eps}}
+\caption{Two distributions of facial landmarks when rotating}\label{fig:noted-figure}
+%\note{the solid lines represent the time histogram of the spontaneous activities of an old monkey cell(gray) and a young monkey cell (black). The bin-width is 1}
+\end{figure}
+
+When the subject turns away, two kinds of new facial landmarks distribution would probably show up(shown in Fig. 6.2a and Fig. 6.2b). In this case, we conclude two criteria:
+
+\begin{itemize}
+    \item When the distance between is 1.1 times(this factor should be changed along with different situations) longer than the distance between , the algorithm thinks that the subject turns to his left side. On contrary, when the distance between is 1.1 times(this factor should be changed along with different situations) longer than the distance between , the algorithm thinks that the subject turns to his right side.
+    \item When the height of is 1.1 times(this factor should be changed along with different situations) higher than, the algorithm thinks that the subject turns to his left side. On the contrary, when the height of is 1.1 times(this factor should be changed along with different situations) higher than, the algorithm thinks that the subject turns to his right side.
+\end{itemize} 
+
+ The criteria give the judgement that the subject begins to turn to his left side in frame 128 and turn his head back in frame 207 , whereas he begins to rotate his head in right direction in 248th frame and turns back in 310th frame. This judgement matches with our own observation. What's more, there are only 1 frame out of 900 frames that the criteria give the wrong judgement. In this case, we should consider these rules to be reasonable and acceptable. (In order to make sure the accuracy of this algorithm, we discard that one frame directly.)
+
+ After knowing from which frame ROI should be changed, we now need to define our rectified ROI. We choose two sub-ROIs. Sub-ROI one is the right cheek region of the subject and sub-ROI two is the left one. When the subject turns left, sub-ROI one is still normal whereas sub-ROI two shrinks a lot and contains pixels outside the face region. Under this circumstance, we choose sub-ROI one as a substitute ROI. Similarly, when the subject turns right, we take sub-ROI two. Consequently, the rectified ROI is defined as follows: when subject turns left, rectified ROI is sub-ROI one; when subject turns right, rectified ROI is sub-ROI two; when subject stay stationary, rectified ROI is the original ROI. However, there is absolute difference value between different ROI. Before recovering PPG signal in the step of normalizing, the difference need be eliminated. 
+
+ In short, our new algorithm first makes judgement about the status of the subject and then defines rectified ROI with difference eliminated. Besides, the rest of our algorithm is as same as the previous description. 
+
+\section{Evaluation and Result}
+We evaluate our new method on the previous-mentioned head rotation video. The result and visualization output is as Table. 6.1 and Fig. 6.3.
+
+
+
+\begin{table}[htbp]
+\centering
+\caption{Results under head rotation scenario} \label{tab:simpletable}
+\begin{tabular}{|c|c|}
+    \hline
+     & Value(bpm) \\
+    \hline
+    Ground truth & 62.75 \\
+    \hline
+    Result(original ROI) & 72.6773 \\
+    \hline
+    Results(rectified ROI) & 68.1818\\
+    \hline
+\end{tabular}
+%\note{注释里要写明每个统计量}
+\end{table}
+
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=10cm]{4_3b.eps}
+\caption{Visualization output under head rotation scenario}\label{fig:noted-figure}
+%\note{the solid lines represent the time histogram of the spontaneous activities of an old monkey cell(gray) and a young monkey cell (black). The bin-width is 1}
+\end{figure}
+
+
+From the table, we could tell that there is an obvious improvement when compared with the old framework. The measure error is reduced to  bear per minute. In the visualization output, we notice that the PPG signal recovered from rectified ROI is more smooth and the discarded segment matches with head movement frames. This result shows the great potency of our new algorithm. We believe that the concept of sub-ROI and rectified ROI can inspire further researches dealing with significant movement scenarios. What's more, since the new algorithm is totally inspired by our proposed guideline, the effectiveness of this method can be an evidence indicating the guideline's promising and inspiring characteristics.
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,188 @@
+\chapter{Fundamentals}
+\citestyle{ustcnumerical}
+This chapter will discuss about the theory and basic structure of current algorithm framework. The face recognition method, face tracking method and HR signal recovering model are the basement of our framework. What's more, previous related works will also be concluded.
+
+\section{Introduction to the Current Algorithm Framework}
+This paper is based on the current algorithm framework proposed by Li et al. in 2014\cite{li2014remote}(Fig. 2.1). Ren Li implemented the framework in details in 2016.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=14cm,height=8cm]{2_1}
+\caption{Basic framework of current algorithm}\label{fig:noted-figure}
+%\note{the solid lines represent the time histogram of the spontaneous activities of an old monkey cell(gray) and a young monkey cell (black). The bin-width is 1}
+\end{figure}
+
+Their approach selects adaptive filtering to handle illumination and motion issues. The framework can be roughly divided into four steps. The first step is aimed to extract color traces from the ROI of the face video as well as remove the influence of subject's rigid head movement. Discriminative Response Map Fitting(DRMF) method\cite{asthana2013robust} is used for finding precise face ROI and Kanade-Lucas-Tomasi(KLT) algorithm\cite{tomasi1991detection} is employed to address the rigid motion problem through tracking feature points. In the second step, illumination variation is tackled. The signals extracted is normalized to help rectify the interferences of illumination variation inside the ROI. Furthermore, the third step solves the non-rigid motion problem through discarding signal segments with big standard deviation(SD) values and the last step employs several filters to recover HR signal. After all the four steps, the value of actual HR frequency will be  estimated through Welch's power spectral density estimation method\cite{welch1967use}. 
+
+\section{Theories}
+In this section, we will elaborate the theories behind this non-intrusive HR measurement framework. All the details we talk about here are crucial for our further discussion and innovation.
+
+\subsection{Photoplethysmography}
+Photoplethysmography(PPG) is the core principle of the whole framework. This conception was first brought up in late 1930s\cite{hertzman1937photoelectric}. Technically speaking, a PPG is an optically obtained plethysmogram, which could measure an organ volumetrically. It has been reported that a PPG could be detected by using a pulse oximeter which illuminates the skin and measuring changes in light absorption\cite{shelley2001pulse}. 
+
+The PPG is closely connected with human body's cardiac cycle. With each cardiac pulse, the heart pumps blood all over the body, leading the periphery blood volume changes correspondingly. When illuminated with a light-emitting diode(LED), human skin reflects or transmit certain amount of light to a photodiode. The value of this amount of light is mainly influenced by the rhythmic-changing blood volume, blood vessel wall movement as well as the orientation of red blood cells(RBC)\cite{allen2007photoplethysmography} so that each cardiac cycle appears as a peak(example plot as Fig. 2.2a).  
+
+
+\begin{figure}[ht]
+\subfigure[A representative PPG]{
+\includegraphics[width=8cm,height=5cm]{PPG.eps}}
+\hspace{-0.5in}
+\subfigure[Detecting ECG and BP from PPG]{
+\includegraphics[width=8cm,height=5cm]{ECG.eps}}
+\caption{Photoplethysmography }\label{fig:noted-figure}
+%\note{the solid lines represent the time histogram of the spontaneous activities of an old monkey cell(gray) and a young monkey cell (black). The bin-width is 1}
+\end{figure}
+
+Thereafter, the pulsatile component of the cardiac cycle can be easily detected through monitoring the amount of light reflected or transmitted. It has already been proved in various experiments that PPG can be reliably used for measuring HR, respiration, depth of anesthesia, etc.\cite{allen2007photoplethysmography}. Fig. 2.2b clearly shows the reliability of detecting blood pressure(BP) and electrocardiography(EKG) through PPG.
+
+
+\subsection{Face Detection and Tracking}
+The result of ROI detecting and tracking step is crucial for PPG signal recovering. A good output with accurate ROI defining and few noises polluting can lead to greatly improved measure error.
+
+In the current framework, the algorithm for ROI detecting is based on Discriminative Response Map Fitting(DRMF) method. When input a frame from a face video, Viola-Jones face detector firstly define a rough face location in terms of rectangle. This could lower down the error rate of DRMF method. After that, 66 facial landmarks are determined inside the rectangle by running DRMF algorithm and Li choose 9 points out of 66 landmarks to define their ROI(Fig. 2.3). 
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=10cm]{2_3.eps}
+\caption{Definition of ROI}\label{fig:noted-figure}
+%\note{the solid lines represent the time histogram of the spontaneous activities of an old monkey cell(gray) and a young monkey cell (black). The bin-width is 1}
+\end{figure}
+
+There are two criteria for ROI boundary choosing: the first one is to exclude the eye region to remove the noises brought by eye blinking; the second one is to make sure that the boundary can not exceed the face contour in case that background pixels were counted(like Fig. 2.3).
+
+When it comes to the ROI tracking, the Kanade-Lucas-Tomasi(KLT) method is deployed. As mentioned before, the objective of ROI tracking is to eliminate the rigid head movement. The basic principle behind can be demonstrated by the formula 2.1:
+
+
+    \begin{equation}
+        Q_{i+1} = AQ_i,
+    \end{equation}
+
+ where \textbf{$Q_i$} represents the ROI points matrix in $ith$ frame and $A$ is the transformation matrix. In this framework, Li first uses built-in function of matlab to determine feature points for every interested frame and then calculate transformation matrix $A$ though formula 2.2:
+
+     \begin{equation}
+        P_{i+1} = AP_i,
+    \end{equation}
+
+ where \textbf{$P_i$} is the feature points matrix. After that, apply the transformation matrix $A$ directly to formula 2.1, tracking can be realized and each interested frame's ROI can be defined. In that case, pixels' value inside ROI of the whole video can be calculated for further steps.
+
+\subsection{Normalization and Green-channel-based Model}
+After the ROI detecting and tracking, mean value of the pixels inside ROI can be retrieved. This section will illustrate in detail how to process the mean value we extract to recover PPG signals.
+
+The idea of deploying normalization to eliminate noises from background illumination is contained in chrominance-based(CHRO) method, brought up by Haan et al\cite{de2013robust}, in 2013. In order to make the optical signal extracted inside ROI independent from background illumination, color traces should be processed by formula 2.3 as below:
+
+
+      \begin{equation}
+        G_i = \frac{C_i}{\mu(C_i)}-1,
+    \end{equation} 
+
+where $C_i$ indicates the intensity of a certain pixel, and $\mu(C_i)$ is the mean value computed by an average filter with the center all around the current frame. Fig. 2.4a demonstrates that noise is reduced by normalization and the pulse becomes more visible. This normalization method is reported to be useful when improving the non-intrusive HR detection method's performance under complicated illumination environment\cite{de2013robust}. 
+
+\begin{figure}[ht]
+\subfigure[Use normalization to eliminate illumination variation]{
+\includegraphics[width=8cm,height=5cm]{2_4a.eps}}
+\hspace{-0.5in}
+\subfigure[Motion elimination]{
+\includegraphics[width=8cm,height=5cm]{2_4b.eps}}
+%\note{The red regions are the segments with biggest SD value; the second plot is the signal where moiton has been removed; the thrid signal is SD value of each segment}
+\caption{The second and thrid step of the algorithm }\label{fig:noted-figure}
+%\note{the solid lines represent the time histogram of the spontaneous activities of an old monkey cell(gray) and a young monkey cell (black). The bin-width is 1}
+\end{figure}
+
+Now that normalization greatly rectify the illumination variations inside the ROI, the following green-channel-based method will make the PPG signal recovery come true. Previous work has already proved that the distribution of information among three chrominance channels(R, G, B) is not balanced. The green channel contains the strongest level of plethysmographic signals\cite{verkruysse2008remote}. That is consistent with the fact that green light can go deeper beneath the human skin and be absorbed more abundantly when comparing with red and blue channel. Therefore, the PPG signal can be considered as the normalized green channel signals. In other words, when we treat the PPG signal as a linear combination of all the three normalized channel signals, we will get a formula as follows:
+
+
+       \begin{equation}
+        \vec S = \vec WC
+    \end{equation} 
+
+where
+
+	\begin{equation}
+        \vec W = [0,1,0],
+    \end{equation} 
+
+
+
+\subsection{Non-rigid Motion Elimination and Post Processing}
+The fourth stage is aimed to eliminate the noise remained from former steps. 
+One kind of the noise is aroused by the subject's non-rigid movement, like nodding. In view of this situation, the framework first cut the previous PPG signals into segments and calculate standard deviation(SD) for each of them. The segments with big SD are considered to be corresponding to frames with non-rigid movement and discarded(like Fig. 2.4b).
+
+Another kind of noise is mixed up with the raw PPG signals and the framework use detrending method\cite{tarvainen2002advanced} and FIR temporal filters to deal with this situations. The detrending method is aimed to extract periodic component out of the raw signals. Its output is presented in Fig. 2.5. 
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=10cm]{2_5.eps}
+\caption{Effect of detrending method}\label{fig:noted-figure}
+%\note{the solid lines represent the time histogram of the spontaneous activities of an old monkey cell(gray) and a young monkey cell (black). The bin-width is 1}
+\end{figure}
+
+At the same time, it is recognized that human's resting heart rate range is 42 to 129 beats per minute and the maximum heart rate human could reach is 220 beats per minute\cite{kolata2001maximum}. Based on that, bandpass of the FIR temporal filter is set as [0.7, 4]Hz, which covers all the possible human heart rate. As for the random noise, a moving window is used as a filter to smooth it. 
+
+\subsection{Heart Rate Estimation}
+In the end, heart rate is finally recovered from the PPG signal processed before by using the recognized Welch's method. The frequency HR corresponding to is the largest frequency in power spectral density(PSD) of processed PPG signal(Fig. 2.6)and the value of HR is the frequency multiplied by 60.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=10cm]{2_6.eps}
+\caption{HR estimation with PSD}\label{fig:noted-figure}
+%\note{the solid lines represent the time histogram of the spontaneous activities of an old monkey cell(gray) and a young monkey cell (black). The bin-width is 1}
+\end{figure}
+
+\subsection{Groundtruth extraction}
+When we want to know the accuracy of a HR detection method, we need have ground truth data in advance. For MAHNOB-HCI dataset\cite{soleymani2012multimodal}, 27 subjects are involved and data from EEG, ECG as well as video are synchronically collected. In this case, we could use original ECG signal as ground truth directly. The algorithm needs to detect the peaks of ECG signal(Fig .2.7) and calculate the intervals. After that, you could use the mean value of these intervals together with FIR filters to extract the average HR directly as the ground truth.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=10cm]{2_7.eps}
+\caption{Ground truth extraction}\label{fig:noted-figure}
+%\note{the solid lines represent the time histogram of the spontaneous activities of an old monkey cell(gray) and a young monkey cell (black). The bin-width is 1}
+\end{figure}
+
+However, under realistic situations like subject's driving, exercising, the possibility of wearing EEG and ECG equipment to get ground truth signals is quite slim. We need to utilize other method instead of ECG to roughly measure HR and extract reliable ground truth. The new method for measuring and extracting ground truth will be introduced in details in Chapter three. 
+
+\section{Results and related works}
+Non-intrusive HR detection based on PPG has been a hot topic for a long time because of its great potential in medical and commercial field. Many related works have been reported and the results are becoming better and better. Thus, this section briefly concludes those researches and demonstrates the superiority of our framework.
+
+Poh et al.\cite{poh2010non} was the first to deploy web-based camera to detect HR and they tested the method on their own materials. Haan et al.\cite{de2014improved}'s work was the first step towards eliminating the influence of movement. Tarassenko et al.\cite{tarassenko2014non} focused on the noises from background illumination variation. Tuyakov et al.\cite{tulyakov2016self} put forward a new method that could automatically detect the region of interest in subject's face. Li et al.\cite{li2014remote} proposed the framework we use in this paper, they have taken various influencing factors into consideration and reached the best performance in this field. The results of all these mentioned works are listed in table 2.1 
+
+\newcommand{\tabincell}[2]{\begin{tabular}{@{}#1@{}}#2\end{tabular}}
+\begin{table}[ht]
+\centering
+\caption{Related Works} \label{tab:simpletable}
+\begin{tabular}{|c|c|}
+    \hline
+    Related paper & \tabincell{c} {Innovative points} \\
+    \hline
+     Li2014 & \tabincell {c}{propose a framework} \\
+    \hline
+     Poh2010 & \tabincell {c}{the first to detect HR based on campera} \\
+    \hline
+     Haan2013 & \tabincell {c}{propose a chrominance-based PPG recovery method \\and consider movement} \\
+    \hline       
+     Tarassenko2014 & \tabincell {c}{use auto-regression model and pole cancellation \\to deal with illumination variation} \\
+    \hline
+     Tuyakov2016 & \tabincell {c}{realize automaticly detecting ROI} \\
+    \hline
+\end{tabular}
+%\note{注释里要写明每个统计量}
+\end{table}
+
+
+
+
+%本章展示图片相关用法。
+
+%\section{示例}
+%\begin{figure}[ht]
+%\centering
+%\includegraphics[width=10cm]{ustc_logo_fig}
+%\caption{测试图片} \label{fig:figure1}
+%\end{figure}
+
+%\section{带图注的图}
+%\begin{figure}[ht]
+%\centering
+%\includegraphics[width=10cm]{ustc_logo_fig}
+%\caption{带图注的图片}\label{fig:noted-figure}
+%\note{the solid lines represent the time histogram of the spontaneous activities of an old monkey cell(gray) and a young monkey cell (black). The bin-width is 1}
+%\end{figure}
